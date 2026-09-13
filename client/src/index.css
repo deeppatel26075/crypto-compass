@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-dark-950 text-gray-200 font-sans min-h-screen overflow-x-hidden;
+    background-image: 
+      radial-gradient(at 10% 20%, rgba(0, 212, 255, 0.04) 0px, transparent 40%),
+      radial-gradient(at 90% 80%, rgba(0, 245, 155, 0.04) 0px, transparent 40%),
+      radial-gradient(at 50% 50%, rgba(138, 43, 226, 0.03) 0px, transparent 50%);
+  }
+
+  /* Custom scrollbar for fintech dark aesthetics */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #060709;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1b2334;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #232d42;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    background: rgba(15, 19, 29, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .glass-panel-interactive {
+    background: rgba(15, 19, 29, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .glass-panel-interactive:hover {
+    background: rgba(21, 27, 40, 0.85);
+    border-color: rgba(0, 245, 155, 0.25);
+    box-shadow: 0 0 20px -5px rgba(0, 245, 155, 0.15);
+  }
+
+  .neon-text-green {
+    color: #00f59b;
+    text-shadow: 0 0 12px rgba(0, 245, 155, 0.4);
+  }
+
+  .neon-text-cyan {
+    color: #00d4ff;
+    text-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+  }
+}
