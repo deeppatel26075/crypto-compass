@@ -117,25 +117,12 @@ const RootLayout = () => {
 
         {/* Sidebar Bottom Promotional / Educational Widget from Reference */}
         <div className="p-3 border-t border-white/[0.06]">
-          <div className="rounded-xl p-3.5 bg-gradient-to-b from-[#0a1420] to-[#060c14] border border-white/[0.09] relative overflow-hidden shadow-lg">
-            {/* Cosmic Sphere Illustration & Text */}
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-xs font-bold text-white leading-tight">
-                Same Knowledge<br />
-                <span className="text-[#00D4FF]">A Brighter</span> You
-              </div>
-              <div className="relative w-12 h-12 flex-shrink-0">
-                {/* Glowing celestial orb */}
-                <div className="absolute inset-1 rounded-full bg-gradient-to-tr from-[#00D4FF] via-[#1E40AF] to-[#020617] border border-[#00D4FF]/60 shadow-[0_0_12px_rgba(0,212,255,0.5)]" />
-                {/* Diagonal planetary ring */}
-                <div className="absolute inset-0 border border-[#00D4FF]/80 rounded-full transform -rotate-45 scale-x-125" />
-              </div>
-            </div>
-
-            <div className="pt-2 border-t border-white/[0.08] flex items-center gap-1.5 text-[10px] font-mono font-semibold text-[#00F59B]">
-              <Clock className="w-3 h-3 text-[#00F59B] flex-shrink-0" />
-              <span>SIMULATION / NO REAL MONEY</span>
-            </div>
+          <div className="rounded-2xl overflow-hidden border border-white/[0.12] relative shadow-lg hover:border-[#00D4FF]/50 hover:shadow-[0_0_16px_rgba(0,212,255,0.2)] transition-all cursor-pointer">
+            <img
+              src="/assets/sidebar-widget.png"
+              alt="Same Knowledge A Brighter You - Simulation"
+              className="w-full h-auto object-cover"
+            />
           </div>
 
           {/* Copyright notice with clean spacing */}
