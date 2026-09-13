@@ -11,11 +11,12 @@ import LearnPage from './pages/LearnPage';
 import ChallengesPage from './pages/ChallengesPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import ProfilePage from './pages/ProfilePage';
+import DesignSystemPage from './pages/DesignSystemPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 /**
  * Main application router configuration.
- * Sets up all Phase 0 placeholder routes and catches undefined paths.
+ * Sets up all Phase 0 placeholder routes, Phase 1 Design System showcase, and catches undefined paths.
  */
 function App() {
   return (
@@ -33,6 +34,9 @@ function App() {
           <Route path="challenges" element={<ChallengesPage />} />
           <Route path="leaderboard" element={<LeaderboardPage />} />
           <Route path="profile" element={<ProfilePage />} />
+
+          {/* Phase 1 Design System Showcase */}
+          <Route path="design-system" element={<DesignSystemPage />} />
 
           {/* 404 Catch-all */}
           <Route path="*" element={<NotFoundPage />} />
