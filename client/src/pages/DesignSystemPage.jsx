@@ -313,7 +313,7 @@ const DesignSystemPage = () => {
               {/* States Row */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
                 <Button variant="secondary" size="sm">Default</Button>
-                <Button variant="secondary" size="sm" className="border-neon/40 text-neon">Hover</Button>
+                <Button variant="secondary" size="sm" className="border-[#00F59B]/60 text-[#00F59B] bg-[#00F59B]/10 shadow-[0_0_12px_rgba(0,245,155,0.25)]">Hover</Button>
                 <Button variant="secondary" size="sm" isLoading>Loading</Button>
                 <Button variant="secondary" size="sm" disabled>Disabled</Button>
               </div>
@@ -321,12 +321,13 @@ const DesignSystemPage = () => {
 
             {/* Icon buttons row */}
             <div className="flex items-center gap-2 pt-2 border-t border-white/[0.06]">
-              <IconButton icon={TrendingUp} size="sm" />
-              <IconButton icon={Clock} size="sm" />
-              <IconButton icon={User} size="sm" />
-              <IconButton icon={Grid} size="sm" />
-              <Button variant="secondary" size="sm" icon={Zap} className="flex-1">
-                Button with Icon
+              <IconButton icon={TrendingUp} size="sm" className="hover:border-[#00D4FF]/50 hover:text-[#00D4FF]" />
+              <IconButton icon={Clock} size="sm" className="hover:border-[#00F59B]/50 hover:text-[#00F59B]" />
+              <IconButton icon={User} size="sm" className="hover:border-purple/50 hover:text-purple-400" />
+              <IconButton icon={Grid} size="sm" className="hover:border-white/40 hover:text-white" />
+              <Button variant="secondary" size="sm" className="flex-1 font-semibold flex items-center justify-center gap-1.5">
+                <Zap className="w-4 h-4 text-[#00F59B]" />
+                <span>Button with Icon</span>
               </Button>
             </div>
           </div>

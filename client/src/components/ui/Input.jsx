@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 
 /**
- * Modern Form Input with Neon Focus & Error States
+ * Modern Form Input with Neon Focus & Error States matching reference image
  */
 const Input = forwardRef(({
   label,
@@ -13,16 +13,16 @@ const Input = forwardRef(({
   focused = false,
   ...props
 }, ref) => {
-  const baseInputStyles = 'w-full bg-space-900/90 text-gray-100 placeholder-gray-500 rounded-xl px-3.5 py-2.5 text-sm transition-all duration-200 outline-none border';
+  const baseInputStyles = 'w-full bg-[#0a1118]/90 text-gray-100 placeholder-gray-500 rounded-xl px-3.5 py-2.5 text-sm transition-all duration-200 outline-none border';
 
-  let borderStyles = 'border-white/10 hover:border-white/20 focus:border-neon focus:ring-1 focus:ring-neon/40';
+  let borderStyles = 'border-white/10 hover:border-white/20 focus:border-[#00F59B] focus:ring-1 focus:ring-[#00F59B]/40 focus:shadow-[0_0_15px_rgba(0,245,155,0.25)]';
 
   if (focused) {
-    borderStyles = 'border-neon ring-1 ring-neon/40 shadow-glow-neon-sm';
+    borderStyles = 'border-[#00F59B] ring-1 ring-[#00F59B]/50 shadow-[0_0_16px_rgba(0,245,155,0.3)] text-gray-100';
   } else if (error) {
-    borderStyles = 'border-error ring-1 ring-error/40 shadow-glow-error';
+    borderStyles = 'border-[#EF4444] ring-1 ring-[#EF4444]/50 shadow-[0_0_16px_rgba(239,68,68,0.3)] text-gray-100';
   } else if (disabled) {
-    borderStyles = 'border-white/5 opacity-50 cursor-not-allowed bg-space-950/60';
+    borderStyles = 'border-white/5 opacity-40 cursor-not-allowed bg-black/40';
   }
 
   return (
@@ -55,7 +55,7 @@ const Input = forwardRef(({
       </div>
 
       {error && (
-        <p className="mt-1 text-xs text-error font-medium">{error}</p>
+        <p className="mt-1 text-xs text-[#EF4444] font-medium">{error}</p>
       )}
     </div>
   );
