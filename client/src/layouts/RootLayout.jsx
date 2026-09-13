@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, NavLink, Link, useLocation } from 'react-router-dom';
 import {
   Home,
@@ -23,6 +23,22 @@ import {
 const RootLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const searchInputRef = useRef(null);
+
+  // Global Ctrl+K / Cmd+K listener to focus top search bar
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        if (searchInputRef.current) {
+          searchInputRef.current.focus();
+          searchInputRef.current.select();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const mainNavItems = [
     { to: '/', label: 'Home', icon: Home },
@@ -203,6 +219,7 @@ const RootLayout = () => {
             <div className="relative w-full flex items-center">
               <Search className="w-4 h-4 text-gray-400 absolute left-3.5 pointer-events-none" />
               <input
+                ref={searchInputRef}
                 type="text"
                 placeholder="Search components, colors, or anything..."
                 className="w-full bg-space-900/80 text-gray-200 text-xs rounded-full pl-9 pr-16 py-2 border border-white/[0.08] hover:border-white/[0.16] focus:border-neon focus:ring-1 focus:ring-neon/30 outline-none transition-all placeholder-gray-500"

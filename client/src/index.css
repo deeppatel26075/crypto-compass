@@ -91,3 +91,14 @@
     radial-gradient(2px 2px at 85% 75%, rgba(0, 245, 155, 0.3), transparent),
     radial-gradient(1px 1px at 50% 90%, rgba(138, 43, 226, 0.3), transparent);
 }
+
+/* Accessibility: Full reduced-motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

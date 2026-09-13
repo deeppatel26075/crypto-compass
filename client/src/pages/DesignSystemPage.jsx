@@ -33,6 +33,7 @@ import ProgressBar from '../components/ui/ProgressBar';
 import CircularProgress from '../components/ui/CircularProgress';
 import Spinner from '../components/ui/Spinner';
 import { CardSkeleton } from '../components/ui/Skeleton';
+import FeatureCard from '../components/ui/FeatureCard';
 import Modal from '../components/ui/Modal';
 import Toast from '../components/ui/Toast';
 import CosmicHeroVisual from '../components/common/CosmicHeroVisual';
@@ -46,31 +47,49 @@ const DesignSystemPage = () => {
   const [checkbox2, setCheckbox2] = useState(false);
   const [toggle1, setToggle1] = useState(true);
   const [toggle2, setToggle2] = useState(false);
-  const [activeToast, setActiveToast] = useState(null);
+  const [toasts, setToasts] = useState([]);
   const [motionIndex, setMotionIndex] = useState(0);
 
   const copyToClipboard = (hex) => {
     navigator.clipboard.writeText(hex);
     setCopiedHex(hex);
+    triggerToast('success', 'Copied!', `Color hex ${hex} copied to clipboard.`);
     setTimeout(() => setCopiedHex(null), 1800);
   };
 
   const triggerToast = (type, title, message) => {
-    setActiveToast({ type, title, message });
-    setTimeout(() => setActiveToast(null), 4000);
+    const id = Date.now() + Math.random();
+    setToasts((prev) => [...prev.slice(-3), { id, type, title, message }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 4500);
+  };
+
+  const removeToast = (id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
   return (
     <div className="space-y-8 pb-12">
-      {/* Toast Notification Container (Floating) */}
-      {activeToast && (
-        <div className="fixed bottom-6 right-6 z-50 max-w-sm w-full animate-bounce-short">
-          <Toast
-            type={activeToast.type}
-            title={activeToast.title}
-            message={activeToast.message}
-            onClose={() => setActiveToast(null)}
-          />
+      {/* Toast Notification Container (Stacked in Bottom Right) */}
+      {toasts.length > 0 && (
+        <div className="fixed bottom-6 right-6 z-50 max-w-sm w-full space-y-2 pointer-events-auto">
+          {toasts.map((toast) => (
+            <motion.div
+              key={toast.id}
+              initial={{ opacity: 0, y: 15, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.25 }}
+            >
+              <Toast
+                type={toast.type}
+                title={toast.title}
+                message={toast.message}
+                onClose={() => removeToast(toast.id)}
+              />
+            </motion.div>
+          ))}
         </div>
       )}
 
