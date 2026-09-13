@@ -8,7 +8,7 @@
   }
 
   body {
-    @apply bg-canvas text-gray-200 font-sans min-h-screen overflow-x-hidden;
+    @apply text-gray-200 font-sans min-h-screen overflow-x-hidden;
     background-color: #020609;
     background-image: 
       radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 212, 255, 0.08), transparent),

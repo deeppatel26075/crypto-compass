@@ -52,7 +52,7 @@ const RootLayout = () => {
   ];
 
   return (
-    <div className="min-h-screen flex bg-canvas text-gray-200 overflow-x-hidden">
+    <div className="min-h-screen flex bg-space-950 text-gray-200 overflow-x-hidden">
       {/* 1. LEFT SIDEBAR (Desktop) */}
       <aside className="hidden lg:flex flex-col w-64 bg-space-950/90 border-r border-white/[0.07] backdrop-blur-2xl fixed inset-y-0 left-0 z-40 select-none">
         {/* Brand Header */}
