@@ -16,17 +16,18 @@ import NotFoundPage from './pages/NotFoundPage';
 
 /**
  * Main application router configuration.
- * Sets up all Phase 0 placeholder routes, Phase 1 Design System showcase, and catches undefined paths.
+ * - Route '/' renders the full-bleed Phase 2 Cinematic Landing Page.
+ * - Dashboard and authenticated shell routes render inside RootLayout (with sidebar).
  */
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<RootLayout />}>
-          {/* Public & Placeholder Routes */}
-          <Route index element={<HomePage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
+        {/* Phase 2 Cinematic Landing Page (Full-Width Public Shell) */}
+        <Route path="/" element={<HomePage />} />
+
+        {/* Application Shell Routes (Sidebar + Top Search) */}
+        <Route element={<RootLayout />}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="markets" element={<MarketsPage />} />
           <Route path="portfolio" element={<PortfolioPage />} />
@@ -34,6 +35,8 @@ function App() {
           <Route path="challenges" element={<ChallengesPage />} />
           <Route path="leaderboard" element={<LeaderboardPage />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
 
           {/* Phase 1 Design System Showcase */}
           <Route path="design-system" element={<DesignSystemPage />} />
