@@ -1,16 +1,18 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const apiRoutes = require('./routes/api');
 const errorHandler = require('./middleware/errorHandler');
 const notFoundHandler = require('./middleware/notFoundHandler');
 
 const app = express();
 
-// Request body parsers
+// Request body and cookie parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// CORS configuration
+// CORS configuration: restrict to configured client origin with credentials
 const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173';
 app.use(
   cors({

@@ -1,9 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/common/ProtectedRoute';
 import RootLayout from './layouts/RootLayout';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import OnboardingPage from './pages/OnboardingPage';
 import DashboardPage from './pages/DashboardPage';
 import MarketsPage from './pages/MarketsPage';
 import PortfolioPage from './pages/PortfolioPage';
@@ -15,36 +18,56 @@ import DesignSystemPage from './pages/DesignSystemPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 /**
- * Main application router configuration.
- * - Route '/' renders the full-bleed Phase 2 Cinematic Landing Page.
- * - Dashboard and authenticated shell routes render inside RootLayout (with sidebar).
+ * Main application router configuration with Phase 3 Authentication.
+ * - Public: '/' (Cinematic Landing), '/login', '/register'
+ * - Authenticated & Protected: '/onboarding', '/dashboard', '/markets', '/portfolio', '/learn', '/challenges', '/leaderboard', '/profile'
+ * - Design System Showcase: '/design-system' (in RootLayout)
  */
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        {/* Phase 2 Cinematic Landing Page (Full-Width Public Shell) */}
-        <Route path="/" element={<HomePage />} />
+      <AuthProvider>
+        <Routes>
+          {/* 1. Public Standalone Pages */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
-        {/* Application Shell Routes (Sidebar + Top Search) */}
-        <Route element={<RootLayout />}>
-          <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="markets" element={<MarketsPage />} />
-          <Route path="portfolio" element={<PortfolioPage />} />
-          <Route path="learn" element={<LearnPage />} />
-          <Route path="challenges" element={<ChallengesPage />} />
-          <Route path="leaderboard" element={<LeaderboardPage />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
+          {/* 2. Authenticated Onboarding Route */}
+          <Route
+            path="/onboarding"
+            element={
+              <ProtectedRoute>
+                <OnboardingPage />
+              </ProtectedRoute>
+            }
+          />
 
-          {/* Phase 1 Design System Showcase */}
-          <Route path="design-system" element={<DesignSystemPage />} />
+          {/* 3. Protected Application Shell Routes (Sidebar + Header) */}
+          <Route
+            element={
+              <ProtectedRoute>
+                <RootLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="markets" element={<MarketsPage />} />
+            <Route path="portfolio" element={<PortfolioPage />} />
+            <Route path="learn" element={<LearnPage />} />
+            <Route path="challenges" element={<ChallengesPage />} />
+            <Route path="leaderboard" element={<LeaderboardPage />} />
+            <Route path="profile" element={<ProfilePage />} />
+          </Route>
 
-          {/* 404 Catch-all */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-      </Routes>
+          {/* 4. Public App Shell View for Design System Showcase */}
+          <Route element={<RootLayout />}>
+            <Route path="design-system" element={<DesignSystemPage />} />
+            {/* Catch-all 404 */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

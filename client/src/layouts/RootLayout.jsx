@@ -16,10 +16,14 @@ import {
   Menu,
   X,
   Clock,
+  LogOut,
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const RootLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
   const location = useLocation();
   const searchInputRef = useRef(null);
 
@@ -237,16 +241,59 @@ const RootLayout = () => {
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#EF4444] ring-2 ring-[#050a0f]" />
             </button>
 
-            {/* User Profile Chip: Avatar (D in purple) + Demo User / Beginner */}
-            <div className="flex items-center gap-2.5 pl-1.5 py-1 pr-2.5 rounded-full bg-[#0a1118]/70 border border-white/[0.09] hover:border-white/20 transition-colors cursor-pointer select-none">
-              <div className="w-7 h-7 rounded-full bg-[#7C3AED] flex items-center justify-center text-xs font-bold text-white shadow-[0_0_12px_rgba(124,58,237,0.4)]">
-                D
+            {/* User Profile Chip with Logout Dropdown */}
+            <div className="relative">
+              <div
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex items-center gap-2.5 pl-1.5 py-1 pr-2.5 rounded-full bg-[#0a1118]/70 border border-white/[0.09] hover:border-white/20 transition-colors cursor-pointer select-none"
+              >
+                <div className="w-7 h-7 rounded-full bg-[#7C3AED] flex items-center justify-center text-xs font-bold text-white shadow-[0_0_12px_rgba(124,58,237,0.4)]">
+                  {user?.name ? user.name.charAt(0).toUpperCase() : 'D'}
+                </div>
+                <div className="hidden md:block text-left">
+                  <div className="text-xs font-bold text-white leading-tight">
+                    {user?.name || 'Demo User'}
+                  </div>
+                  <div className="text-[10px] text-gray-400 font-sans leading-tight">
+                    {user ? 'Learner' : 'Beginner'}
+                  </div>
+                </div>
+                <ChevronDown className="w-3.5 h-3.5 text-gray-400 ml-0.5" />
               </div>
-              <div className="hidden md:block text-left">
-                <div className="text-xs font-bold text-white leading-tight">Demo User</div>
-                <div className="text-[10px] text-gray-400 font-sans leading-tight">Beginner</div>
-              </div>
-              <ChevronDown className="w-3.5 h-3.5 text-gray-400 ml-0.5" />
+
+              {/* Dropdown Menu */}
+              {userMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-[#08111a] border border-white/[0.12] shadow-[0_15px_35px_rgba(0,0,0,0.8)] py-2 z-50">
+                  <div className="px-4 py-2 border-b border-white/[0.06]">
+                    <div className="text-xs font-bold text-white truncate">
+                      {user?.name || 'Demo User'}
+                    </div>
+                    <div className="text-[10px] text-gray-400 truncate font-mono">
+                      {user?.email || 'simulation@cryptocompass.io'}
+                    </div>
+                  </div>
+                  {user ? (
+                    <button
+                      onClick={() => {
+                        setUserMenuOpen(false);
+                        logout();
+                      }}
+                      className="w-full px-4 py-2.5 text-left text-xs font-semibold text-[#EF4444] hover:bg-white/[0.04] flex items-center gap-2 transition-colors"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span>Log Out</span>
+                    </button>
+                  ) : (
+                    <Link
+                      to="/login"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="w-full px-4 py-2.5 text-left text-xs font-semibold text-[#00F59B] hover:bg-white/[0.04] flex items-center gap-2 transition-colors"
+                    >
+                      <span>Log In</span>
+                    </Link>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </header>
