@@ -7,6 +7,16 @@
     color-scheme: dark;
   }
 
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #020609;
+  }
+
   body {
     @apply text-gray-200 font-sans min-h-screen overflow-x-hidden;
     background-color: #020609;
@@ -15,7 +25,14 @@
       url('/assets/cosmic-bg.jpg');
     background-size: cover;
     background-position: center top;
-    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+  }
+
+  @media (min-width: 1024px) {
+    body {
+      background-attachment: fixed;
+    }
   }
 
   /* Custom precision scrollbars */

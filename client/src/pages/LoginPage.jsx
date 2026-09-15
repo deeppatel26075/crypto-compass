@@ -6,12 +6,13 @@ import { useAuth } from '../context/AuthContext';
 import Button from '../components/ui/Button';
 
 export default function LoginPage() {
-  const { login, isAuthenticated } = useAuth();
+  const { user, login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Redirect if already authenticated
-  const from = location.state?.from?.pathname || '/dashboard';
+  // Redirect target calculation
+  const defaultTarget = user?.onboarding?.completed === false ? '/onboarding' : '/dashboard';
+  const from = location.state?.from?.pathname || defaultTarget;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,7 +21,8 @@ export default function LoginPage() {
   const [error, setError] = useState(null);
 
   if (isAuthenticated) {
-    return <Navigate to={from} replace />;
+    const target = user?.onboarding?.completed === false ? '/onboarding' : from;
+    return <Navigate to={target} replace />;
   }
 
   const handleSubmit = async (e) => {
@@ -34,8 +36,9 @@ export default function LoginPage() {
 
     setLoading(true);
     try {
-      await login(email, password);
-      navigate(from, { replace: true });
+      const loggedInUser = await login(email, password);
+      const target = loggedInUser?.onboarding?.completed === false ? '/onboarding' : from;
+      navigate(target, { replace: true });
     } catch (err) {
       setError(err.message || 'Login failed. Please check your credentials.');
     } finally {
@@ -155,7 +158,7 @@ export default function LoginPage() {
                 type="submit"
                 variant="primary"
                 size="lg"
-                loading={loading}
+                isLoading={loading}
                 disabled={loading}
                 className="w-full justify-center text-sm font-extrabold uppercase tracking-wider"
               >

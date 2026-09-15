@@ -72,6 +72,16 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Complete onboarding
+  const completeOnboarding = async (onboardingData) => {
+    const res = await api.put('/onboarding', onboardingData);
+    if (res.success && res.user) {
+      setUser(res.user);
+      return res.user;
+    }
+    throw new Error(res.message || 'Failed to complete onboarding.');
+  };
+
   const value = {
     user,
     loading,
@@ -80,6 +90,7 @@ export function AuthProvider({ children }) {
     register,
     logout,
     refreshUser,
+    completeOnboarding,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

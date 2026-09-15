@@ -38,17 +38,16 @@ Traditional paper trading simply displays profit and loss. **Crypto Compass turn
 
 ## 🚀 Key Features
 
+* **Virtual Trading Access Gate**: Access tier displayed at ₹999 with 100% promotional unlock via code `CRYPTO100` ($0 access cost, zero real-money transactions).
 * **Virtual Trading Simulator**: Trade top cryptocurrencies with a $10,000 starting virtual balance in a risk-free environment.
-* **Real-Time Market Data**: Live prices, percentage changes, market capitalization, 24h volumes, and historical data.
-* **Interactive Charts**: Responsive candlestick charting powered by TradingView Lightweight Charts (planned).
-* **Trade Coach**: Pre-trade context analyzing position sizing, risk exposure, diversification, and volatility without giving financial advice.
-* **Mistake Analyzer**: Educational behavioral analysis evaluating holding duration, win/loss tendencies, and over-concentration.
-* **Scenario Mode**: Interactive simulations testing reactions to market crashes, bull runs, fake breakouts, and sudden volatility.
-* **What-If Simulator**: Experiment with hypothetical portfolio shifts and market swings before executing simulated trades.
-* **Adaptive Learning & Lessons**: Curated modules on Crypto Basics, Trading Fundamentals, Technical Analysis, and Trading Psychology.
-* **Quizzes & Gamified Progression**: Earn XP, level up from *Crypto Explorer* to *Crypto Navigator*, and unlock achievements.
-* **Educational Leaderboard**: Ranks disciplined trading behavior, quiz success, and learning milestones rather than sheer reckless risk-taking.
-* **AI-Powered Educational Assistant**: Contextual breakdowns of market concepts and trading behavior (future phase).
+* **Real-Time Market Data**: Live prices, 24h percentage trends, market capitalization, and historical price charts from CoinGecko.
+* **Educational Trade Coach**: Server-authoritative deterministic rule engine providing educational risk feedback on proposed paper orders (zero black-box AI).
+* **Behavioral Mistake Analyzer**: Pattern detection for FOMO buying, overtrading, rapid entry/exit, concentration risk, and position sizing.
+* **Interactive Scenario Mode**: Decision-driven simulation scenarios testing reactions to real-world market crashes, bull runs, and volatility.
+* **What-If Historical Simulator**: Experiment with historical date-based holding simulations to understand portfolio risk and drawdowns.
+* **Personalized & Adaptive Learning**: Dynamic recommendations mapping detected trading mistakes directly to bite-sized educational lessons.
+* **Assessment & XP Progression**: Interactive quizzes awarding XP, achievements, and challenges tracked across a unified progression model.
+* **Simulated Leaderboards**: Educational rankings celebrating disciplined risk management and learning milestones rather than sheer portfolio gambling.
 
 ---
 

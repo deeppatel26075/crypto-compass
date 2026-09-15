@@ -118,8 +118,17 @@ export default function LandingNavbar({ onOpenSearch }) {
           </Link>
         </div>
 
-        {/* Mobile Hamburger Toggle */}
-        <div className="flex items-center gap-3 md:hidden">
+        {/* Mobile Hamburger Toggle & Search */}
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            onClick={onOpenSearch}
+            className="p-1.5 text-gray-400 hover:text-white rounded-lg bg-[#0a1420] border border-white/10"
+            title="Search"
+            aria-label="Search"
+          >
+            <Search className="w-4 h-4 text-[#00F59B]" />
+          </button>
+
           <Link
             to="/register"
             className="px-3 py-1.5 rounded-full bg-[#00F59B] text-black text-xs font-bold shadow-[0_0_12px_rgba(0,245,155,0.3)]"
@@ -148,6 +157,17 @@ export default function LandingNavbar({ onOpenSearch }) {
             className="md:hidden bg-[#050a0f]/98 backdrop-blur-2xl border-b border-white/10 px-6 py-6 overflow-hidden"
           >
             <div className="flex flex-col gap-3">
+              {/* Quick Search Button in Drawer */}
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenSearch();
+                }}
+                className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-300 bg-white/[0.04] border border-white/[0.08] hover:border-[#00F59B]/40 hover:text-white transition-all text-left"
+              >
+                <Search className="w-4 h-4 text-[#00F59B]" />
+                <span>Search Lessons & Markets...</span>
+              </button>
               {navLinks.map((item) => (
                 <NavLink
                   key={item.name}

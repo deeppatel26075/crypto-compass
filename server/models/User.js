@@ -26,6 +26,37 @@ const userSchema = new mongoose.Schema(
       required: [true, 'Password hash is required'],
       select: false, // Never returned in default queries
     },
+    onboarding: {
+      completed: {
+        type: Boolean,
+        default: false,
+      },
+      experienceLevel: {
+        type: String,
+        enum: ['beginner', 'curious', 'practice_trader', 'experienced'],
+        default: null,
+      },
+      primaryGoal: {
+        type: String,
+        enum: [
+          'crypto_fundamentals',
+          'practice_trading',
+          'technical_analysis',
+          'risk_management',
+          'trading_discipline',
+        ],
+        default: null,
+      },
+      learningStyle: {
+        type: String,
+        enum: ['short_lessons', 'scenarios', 'quizzes', 'practice'],
+        default: null,
+      },
+      completedAt: {
+        type: Date,
+        default: null,
+      },
+    },
   },
   {
     timestamps: true,
@@ -50,6 +81,13 @@ userSchema.methods.toSafeJSON = function () {
     id: this._id.toString(),
     name: this.name,
     email: this.email,
+    onboarding: this.onboarding || {
+      completed: false,
+      experienceLevel: null,
+      primaryGoal: null,
+      learningStyle: null,
+      completedAt: null,
+    },
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
   };

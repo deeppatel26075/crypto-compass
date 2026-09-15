@@ -58,8 +58,8 @@ export default function LandingFooter() {
                 </Link>
               </li>
               <li>
-                <Link to="/design-system" className="text-[#00F59B] hover:underline">
-                  Design System Showcase
+                <Link to="/scenarios" className="hover:text-white transition-colors">
+                  Educational Scenarios
                 </Link>
               </li>
             </ul>

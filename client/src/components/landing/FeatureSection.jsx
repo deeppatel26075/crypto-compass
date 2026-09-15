@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, TrendingUp, Trophy, Users, ArrowRight } from 'lucide-react';
+import { BookOpen, TrendingUp, Activity, Compass, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import FeatureCard from './FeatureCard';
 
@@ -8,30 +8,30 @@ const features = [
   {
     icon: BookOpen,
     title: 'Learn at Your Pace',
-    description: 'Simple, structured lessons from crypto basics to advanced trading psychology.',
+    description: 'Bite-sized, structured lessons covering blockchain basics, market dynamics, and risk control.',
     accentColor: '#00D4FF',
     to: '/learn',
   },
   {
     icon: TrendingUp,
-    title: 'Practice Trading',
-    description: 'Risk-free simulator with real-time market data and $10,000 in virtual funds.',
+    title: 'Practice Paper Trading',
+    description: 'Simulate spot orders risk-free with live market pricing and a virtual $10,000 USD portfolio.',
     accentColor: '#00F59B',
     to: '/markets',
   },
   {
-    icon: Trophy,
-    title: 'Complete Challenges',
-    description: 'Build real-world skills through guided market scenarios and earn achievement badges.',
+    icon: Activity,
+    title: 'Analyze Your Habits',
+    description: 'Inspect execution tendencies, position sizing, and churn through objective behavioral analytics.',
     accentColor: '#F59E0B',
-    to: '/challenges',
+    to: '/analysis',
   },
   {
-    icon: Users,
-    title: 'Join a Global Community',
-    description: 'Learn, compete on leaderboards, and grow alongside thousands of crypto beginners.',
+    icon: Compass,
+    title: 'Improve with Scenarios',
+    description: 'Solve realistic market decision challenges to build discipline and earn educational achievement badges.',
     accentColor: '#8A2BE2',
-    to: '/leaderboard',
+    to: '/scenarios',
   },
 ];
 

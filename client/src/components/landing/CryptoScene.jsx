@@ -4,22 +4,8 @@ import * as THREE from 'three';
 export default function CryptoScene({ className = '' }) {
   const containerRef = useRef(null);
   const [webGLError, setWebGLError] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Check if mobile device
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  useEffect(() => {
-    // On mobile, we use the optimized static visual fallback to preserve mobile performance
-    if (isMobile) return;
-
     const container = containerRef.current;
     if (!container) return;
 
@@ -51,11 +37,12 @@ export default function CryptoScene({ className = '' }) {
       // 1. Initialize Three.js Scene & Camera
       scene = new THREE.Scene();
 
-      const width = container.clientWidth || 600;
-      const height = container.clientHeight || 550;
+      const width = container.clientWidth || 360;
+      const height = container.clientHeight || 420;
 
+      const isNarrow = width < 640;
       camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-      camera.position.set(0, 0, 14);
+      camera.position.set(0, 0, isNarrow ? 17.5 : 14);
 
       // 2. Renderer with transparent background and antialiasing
       renderer = new THREE.WebGLRenderer({
@@ -111,6 +98,8 @@ export default function CryptoScene({ className = '' }) {
 
         // Face decal texture
         const texture = textureLoader.load(texturePath);
+        texture.center.set(0.5, 0.5);
+        texture.rotation = Math.PI / 2;
         texturesToDispose.push(texture);
 
         const faceMat = new THREE.MeshStandardMaterial({
@@ -169,7 +158,7 @@ export default function CryptoScene({ className = '' }) {
       createOrbitalRing(5.1, 0.028, 0x8a2be2, Math.PI / 5, -Math.PI / 4, Math.PI / 3);
 
       // 6. Cosmic Starfield Particles
-      const particleCount = window.innerWidth > 1200 ? 250 : 120;
+      const particleCount = window.innerWidth > 1200 ? 250 : (window.innerWidth < 640 ? 70 : 130);
       const particleGeom = new THREE.BufferGeometry();
       const posArray = new Float32Array(particleCount * 3);
 
@@ -197,6 +186,7 @@ export default function CryptoScene({ className = '' }) {
           const { width: newWidth, height: newHeight } = entry.contentRect;
           if (newWidth > 0 && newHeight > 0 && renderer && camera) {
             camera.aspect = newWidth / newHeight;
+            camera.position.z = newWidth < 640 ? 17.5 : 14;
             camera.updateProjectionMatrix();
             renderer.setSize(newWidth, newHeight);
           }
@@ -281,19 +271,14 @@ export default function CryptoScene({ className = '' }) {
       console.warn('WebGL Initialization failed, falling back to static composition:', err);
       setWebGLError(true);
     }
-  }, [isMobile]);
+  }, []);
 
-  // Fallback view for mobile or WebGL disabled devices
-  if (isMobile || webGLError) {
+  // Fallback view only if WebGL crashes
+  if (webGLError) {
     return (
-      <div className={`relative w-full h-[400px] sm:h-[480px] flex items-center justify-center overflow-hidden ${className}`}>
-        {/* Crisp static composite fallback with subtle CSS float */}
-        <div className="relative w-full max-w-[520px] aspect-[4/3] flex items-center justify-center">
-          <img
-            src="/assets/hero-artwork-perfect.png"
-            alt="3D Bitcoin, Ethereum, and Solana visual"
-            className="w-full h-auto object-contain animate-float drop-shadow-[0_15px_35px_rgba(0,245,155,0.25)]"
-          />
+      <div className={`relative w-full h-[320px] sm:h-[450px] flex items-center justify-center overflow-hidden pointer-events-none ${className}`}>
+        <div className="relative flex items-center justify-center">
+          <div className="w-56 h-56 sm:w-72 sm:h-72 rounded-full bg-gradient-to-tr from-[#00F59B]/20 via-[#00D4FF]/20 to-[#8A2BE2]/20 blur-3xl animate-pulse" />
         </div>
       </div>
     );
@@ -302,7 +287,7 @@ export default function CryptoScene({ className = '' }) {
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-[450px] sm:h-[520px] lg:h-[620px] flex items-center justify-center overflow-hidden select-none pointer-events-auto ${className}`}
+      className={`relative w-full h-[360px] sm:h-[480px] lg:h-[580px] flex items-center justify-center overflow-hidden select-none pointer-events-none touch-pan-y ${className}`}
       aria-label="Interactive 3D Crypto Scene featuring Bitcoin, Ethereum, and Solana"
     />
   );

@@ -285,7 +285,7 @@ export default function RegisterPage() {
                 type="submit"
                 variant="primary"
                 size="lg"
-                loading={loading}
+                isLoading={loading}
                 disabled={loading || !isPasswordValid || !agreedTerms || (confirmPassword && !doPasswordsMatch)}
                 className="w-full justify-center text-sm font-extrabold uppercase tracking-wider"
               >

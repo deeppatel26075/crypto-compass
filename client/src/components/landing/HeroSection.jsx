@@ -15,26 +15,26 @@ const benefits = [
 export default function HeroSection({ onOpenDemo }) {
   return (
     <section className="relative min-h-[92vh] flex items-center justify-center pt-24 pb-12 overflow-hidden">
-      {/* 1. Cinematic Background Layer with non-aggressive scaling & gradient overlays */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        {/* The single authentic cosmic wallpaper */}
+      {/* 1. Cinematic Background Layer extending full width edge-to-edge across all viewports */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        {/* The authentic cosmic wallpaper - full viewport width on mobile, tablet & desktop */}
         <div
-          className="absolute inset-0 bg-cover bg-right lg:bg-center opacity-45 mix-blend-screen"
+          className="absolute inset-0 w-full h-full bg-cover bg-center sm:bg-right lg:bg-center opacity-45 mix-blend-screen"
           style={{
             backgroundImage: "url('/assets/cosmic-bg.jpg')",
             backgroundRepeat: 'no-repeat',
           }}
         />
 
-        {/* Deep Left-to-Right Gradient ensuring text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#020609] via-[#020609]/90 to-transparent w-full lg:w-3/4" />
+        {/* Soft Left-to-Right / Center Gradient ensuring text contrast & readability */}
+        <div className="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-[#020609] via-[#020609]/85 to-transparent w-full lg:w-3/4" />
 
         {/* Top and Bottom Vignette Fades */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#020609] via-transparent to-[#020609]" />
 
-        {/* Subtle Ambient Radial Glows */}
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-[#00D4FF]/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-[#00F59B]/10 rounded-full blur-3xl" />
+        {/* Ambient Radial Glows across all screen sizes */}
+        <div className="absolute top-1/4 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-[#00D4FF]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-1/3 right-1/3 w-64 sm:w-80 h-64 sm:h-80 bg-[#00F59B]/10 rounded-full blur-3xl pointer-events-none" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -110,43 +110,48 @@ export default function HeroSection({ onOpenDemo }) {
           </motion.div>
 
           {/* RIGHT COLUMN: 3D Crypto Scene, HUD Floating Market Cards, Vertical Tagline */}
-          <div className="lg:col-span-5 relative flex items-center justify-center">
+          <div className="lg:col-span-5 relative flex flex-col sm:flex-row items-center justify-center pt-6 sm:pt-0">
             
-            {/* The 3D Three.js Visual Scene */}
-            <CryptoScene />
+            {/* The 3D Three.js Visual Scene (or optimized mobile illustration) */}
+            <div className="relative w-full flex items-center justify-center">
+              <CryptoScene />
 
-            {/* Floating Glass HUD Market Cards */}
-            <div className="absolute -top-4 left-0 sm:left-4 z-20 pointer-events-auto">
-              <MarketCard
-                symbol="BTC"
-                name="Bitcoin"
-                price="$67,432"
-                change="+2.4%"
-                color="#00F59B"
-                delay={0.2}
-              />
-            </div>
+              {/* Floating Glass HUD Market Cards - repositioned and scaled gracefully for mobile */}
+              {/* BTC Card */}
+              <div className="absolute top-2 left-0 sm:-top-4 sm:left-4 z-20 pointer-events-auto scale-[0.82] sm:scale-100 origin-top-left">
+                <MarketCard
+                  symbol="BTC"
+                  name="Bitcoin"
+                  price="$67,432"
+                  change="+2.4%"
+                  color="#00F59B"
+                  delay={0.2}
+                />
+              </div>
 
-            <div className="absolute top-8 -right-2 sm:right-2 z-20 pointer-events-auto">
-              <MarketCard
-                symbol="ETH"
-                name="Ethereum"
-                price="$3,245"
-                change="+1.8%"
-                color="#627EEA"
-                delay={0.4}
-              />
-            </div>
+              {/* ETH Card */}
+              <div className="absolute top-1/3 right-0 sm:top-8 sm:right-2 z-20 pointer-events-auto scale-[0.82] sm:scale-100 origin-top-right">
+                <MarketCard
+                  symbol="ETH"
+                  name="Ethereum"
+                  price="$3,245"
+                  change="+1.8%"
+                  color="#627EEA"
+                  delay={0.4}
+                />
+              </div>
 
-            <div className="absolute -bottom-6 right-6 sm:right-12 z-20 pointer-events-auto">
-              <MarketCard
-                symbol="SOL"
-                name="Solana"
-                price="$154.23"
-                change="+3.1%"
-                color="#14F195"
-                delay={0.6}
-              />
+              {/* SOL Card */}
+              <div className="absolute -bottom-2 right-1 sm:-bottom-6 sm:right-12 z-20 pointer-events-auto scale-[0.82] sm:scale-100 origin-bottom-right">
+                <MarketCard
+                  symbol="SOL"
+                  name="Solana"
+                  price="$154.23"
+                  change="+3.1%"
+                  color="#14F195"
+                  delay={0.6}
+                />
+              </div>
             </div>
 
             {/* Vertical Decorative Tagline on Far Right matching reference */}
