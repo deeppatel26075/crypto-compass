@@ -10,17 +10,26 @@
  */
 const fs = require('fs');
 const path = require('path');
+const fallbackMarkets = require('../constants/fallbackMarkets');
+const fallbackCharts = require('../constants/fallbackCharts');
 
-const CACHE_TTL_MS = 60 * 1000; // 60 seconds
-const CHART_CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes for historical chart candles
+const CACHE_TTL_MS = 2 * 60 * 1000; // 2 minutes
+const CHART_CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
 let memoryCache = {
-  data: null,
-  lastFetchedAt: 0,
+  data: fallbackMarkets.data || null,
+  lastFetchedAt: fallbackMarkets.lastFetchedAt || Date.now() - 120000,
 };
 
 // Map of chart cache: key = `${symbol}_${timeframe}` -> { data: Array, lastFetchedAt: number }
 const chartCache = new Map();
+
+// Initialize chartCache with fallback charts
+if (fallbackCharts && typeof fallbackCharts === 'object') {
+  for (const [k, v] of Object.entries(fallbackCharts)) {
+    chartCache.set(k, v);
+  }
+}
 
 const CACHE_DIR = path.join(__dirname, '..', '.cache');
 const MARKETS_CACHE_FILE = path.join(CACHE_DIR, 'markets.json');
@@ -185,12 +194,13 @@ async function getMarkets(forceRefresh = false) {
     clearTimeout(timeoutId);
 
     if (res.status === 429) {
-      console.warn('[MarketService] CoinGecko rate limit (429) encountered.');
-      if (memoryCache.data) {
+      console.warn('[MarketService] CoinGecko rate limit (429) encountered. Serving cached/fallback market data.');
+      const data = memoryCache.data || fallbackMarkets.data;
+      if (data) {
         return {
-          markets: memoryCache.data,
+          markets: data,
           isStale: true,
-          cachedAt: new Date(memoryCache.lastFetchedAt).toISOString(),
+          cachedAt: new Date(memoryCache.lastFetchedAt || Date.now()).toISOString(),
         };
       }
       throw new Error('Market data rate limit reached. Please retry in a minute.');
@@ -198,12 +208,13 @@ async function getMarkets(forceRefresh = false) {
 
     if (!res.ok) {
       const errText = await res.text().catch(() => '');
-      console.warn(`[MarketService] Provider returned HTTP ${res.status}: ${errText.slice(0, 100)}`);
-      if (memoryCache.data) {
+      console.warn(`[MarketService] Provider returned HTTP ${res.status}: ${errText.slice(0, 100)}. Serving cached/fallback market data.`);
+      const data = memoryCache.data || fallbackMarkets.data;
+      if (data) {
         return {
-          markets: memoryCache.data,
+          markets: data,
           isStale: true,
-          cachedAt: new Date(memoryCache.lastFetchedAt).toISOString(),
+          cachedAt: new Date(memoryCache.lastFetchedAt || Date.now()).toISOString(),
         };
       }
       throw new Error(`Market data provider unavailable (HTTP ${res.status}).`);
@@ -233,11 +244,12 @@ async function getMarkets(forceRefresh = false) {
     clearTimeout(timeoutId);
     console.error('[MarketService] Error fetching external market data:', err.message);
 
-    if (memoryCache.data) {
+    const data = memoryCache.data || fallbackMarkets.data;
+    if (data) {
       return {
-        markets: memoryCache.data,
+        markets: data,
         isStale: true,
-        cachedAt: new Date(memoryCache.lastFetchedAt).toISOString(),
+        cachedAt: new Date(memoryCache.lastFetchedAt || Date.now()).toISOString(),
       };
     }
 
@@ -298,13 +310,13 @@ async function getMarketChart(symbol, timeframe = '7d') {
 
   const cacheKey = `${cleanSymbol}_${cleanTimeframe}`;
   const now = Date.now();
-  const cached = chartCache.get(cacheKey);
+  let cached = chartCache.get(cacheKey) || fallbackCharts[cacheKey];
 
-  if (cached && now - cached.lastFetchedAt < CHART_CACHE_TTL_MS) {
+  if (cached && now - (cached.lastFetchedAt || 0) < CHART_CACHE_TTL_MS) {
     return {
       points: cached.data,
       isStale: false,
-      cachedAt: new Date(cached.lastFetchedAt).toISOString(),
+      cachedAt: new Date(cached.lastFetchedAt || now).toISOString(),
     };
   }
 
@@ -323,23 +335,25 @@ async function getMarketChart(symbol, timeframe = '7d') {
     clearTimeout(timeoutId);
 
     if (res.status === 429) {
-      console.warn(`[MarketService] Rate limit (429) on chart for ${cleanSymbol}.`);
-      if (cached) {
+      console.warn(`[MarketService] Rate limit (429) on chart for ${cleanSymbol}. Serving fallback.`);
+      const chartData = chartCache.get(cacheKey) || fallbackCharts[cacheKey];
+      if (chartData && Array.isArray(chartData.data)) {
         return {
-          points: cached.data,
+          points: chartData.data,
           isStale: true,
-          cachedAt: new Date(cached.lastFetchedAt).toISOString(),
+          cachedAt: new Date(chartData.lastFetchedAt || Date.now()).toISOString(),
         };
       }
       throw new Error('Chart data rate limit reached. Please retry in a moment.');
     }
 
     if (!res.ok) {
-      if (cached) {
+      const chartData = chartCache.get(cacheKey) || fallbackCharts[cacheKey];
+      if (chartData && Array.isArray(chartData.data)) {
         return {
-          points: cached.data,
+          points: chartData.data,
           isStale: true,
-          cachedAt: new Date(cached.lastFetchedAt).toISOString(),
+          cachedAt: new Date(chartData.lastFetchedAt || Date.now()).toISOString(),
         };
       }
       throw new Error(`Chart data provider returned HTTP ${res.status}`);
@@ -371,11 +385,12 @@ async function getMarketChart(symbol, timeframe = '7d') {
     clearTimeout(timeoutId);
     console.error(`[MarketService] Error fetching chart for ${cleanSymbol}:`, err.message);
 
-    if (cached) {
+    const chartData = chartCache.get(cacheKey) || fallbackCharts[cacheKey];
+    if (chartData && Array.isArray(chartData.data)) {
       return {
-        points: cached.data,
+        points: chartData.data,
         isStale: true,
-        cachedAt: new Date(cached.lastFetchedAt).toISOString(),
+        cachedAt: new Date(chartData.lastFetchedAt || Date.now()).toISOString(),
       };
     }
 
